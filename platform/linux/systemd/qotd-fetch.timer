@@ -1,0 +1,9 @@
+[Unit]
+Description=Fetch new quote daily and on boot
+
+[Timer]
+OnBootSec=5min
+OnCalendar=daily
+
+[Install]
+WantedBy=timers.target

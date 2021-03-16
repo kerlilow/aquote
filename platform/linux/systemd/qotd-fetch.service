@@ -1,0 +1,6 @@
+[Unit]
+Description=Fetch new quote
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/qotd fetch
