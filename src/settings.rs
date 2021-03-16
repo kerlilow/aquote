@@ -31,7 +31,11 @@ impl Settings {
     pub fn new(proj_dirs: &ProjectDirs) -> Result<Self> {
         let mut s = Config::new();
         s.set_default("data_dir", "/var/lib/qotd")?;
-        s.merge(File::with_name("config/default").format(FileFormat::Toml))?;
+        s.merge(
+            File::with_name("/etc/qotd/config.toml")
+                .format(FileFormat::Toml)
+                .required(false),
+        )?;
         s.merge(
             File::with_name(proj_dirs.config_dir().join("config").to_str().unwrap())
                 .format(FileFormat::Toml)
