@@ -51,7 +51,7 @@ fn main() -> Result<()> {
 
 /// Show latest quote.
 fn show() -> Result<()> {
-    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let quotes_path = CONFIG.data_dir.join("quotes.json");
     let manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
     match manager.get() {
         Some(q) => println!("{}\n—{}", q.quote.italic(), q.author),
@@ -74,7 +74,7 @@ fn fetch() -> Result<()> {
         }
         retry::Error::Internal(msg) => anyhow!("An internal error occurred: {}", msg),
     })?;
-    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let quotes_path = CONFIG.data_dir.join("quotes.json");
     let mut manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
     manager.push(quote);
     manager.save()?;
@@ -114,7 +114,7 @@ where
 
 /// Display recent quotes.
 fn recent() -> Result<()> {
-    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let quotes_path = CONFIG.data_dir.join("quotes.json");
     let manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
     let infos: Vec<String> = manager.list().iter().rev().map(format_quote).collect();
     println!("{}", infos.join("\n-----\n"));

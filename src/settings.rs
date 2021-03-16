@@ -3,11 +3,13 @@ use config::{Config, File, FileFormat};
 use directories::ProjectDirs;
 use serde::Deserialize;
 use std::collections::HashMap;
+use std::path::PathBuf;
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
-    pub vendors: HashMap<String, QuoteVendor>,
+    pub data_dir: PathBuf,
     pub enable_vendors: Vec<String>,
+    pub vendors: HashMap<String, QuoteVendor>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -28,6 +30,7 @@ pub struct QuoteQueries {
 impl Settings {
     pub fn new(proj_dirs: &ProjectDirs) -> Result<Self> {
         let mut s = Config::new();
+        s.set_default("data_dir", "/var/lib/qotd")?;
         s.merge(File::with_name("config/default").format(FileFormat::Toml))?;
         s.merge(
             File::with_name(proj_dirs.config_dir().join("config").to_str().unwrap())

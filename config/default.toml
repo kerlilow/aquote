@@ -1,8 +1,16 @@
+# Directory to store data used by qotd.
+# data_dir = "/var/lib/qotd"
+
+# Set `enable_vendors` to enable only the specified vendors.
+# If not set, all configured vendors are enabled by default.
+# enable_vendors = [ "theysaidso", "zenquotes" ]
+
 [vendors.theysaidso]
 name = "They Said So"
 homepage = "https://theysaidso.com"
 endpoint = "https://quotes.rest/qod"
 
+# jq queries to use to extract quote information from API response.
 [vendors.theysaidso.queries]
 quote = ".contents.quotes[0].quote"
 author = ".contents.quotes[0].author"
