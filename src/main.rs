@@ -4,12 +4,16 @@ use colored::Colorize;
 use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use quote::Quote;
+use quote_manager::QuoteManager;
 use rand::prelude::*;
 use retry::{delay::Fixed, retry};
 use serde::de::DeserializeOwned;
 
 mod quote;
+mod quote_manager;
 mod settings;
+
+const MAX_QUOTES: usize = 5;
 
 lazy_static! {
     static ref PROJ_DIRS: ProjectDirs = ProjectDirs::from("me", "kerlilow", "qotd")
@@ -47,8 +51,9 @@ fn main() -> Result<()> {
 
 /// Show latest quote.
 fn show() -> Result<()> {
-    let quotes = load_quotes()?;
-    match quotes.last() {
+    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
+    match manager.get() {
         Some(q) => println!("{}\n—{}", q.quote.italic(), q.author),
         None => println!("No quotes available, run `qotd fetch` to fetch new quote"),
     }
@@ -72,19 +77,14 @@ fn fetch() -> Result<()> {
         }
         retry::Error::Internal(msg) => anyhow!("An internal error occurred: {}", msg),
     })?;
-    push_quote(quote)?;
+    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let mut manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
+    manager.push(quote);
+    manager.save()?;
     Ok(())
 }
 
 /// Fetch quote from quote vendor.
-///
-/// # Arguments
-///
-/// * `vendor_key` - Key of vendor to fetch from, as defined in the configuration.
-///
-/// # Returns
-///
-/// Quote fetched from vendor.
 fn fetch_quote(vendor_key: &str) -> Result<Quote> {
     let vendor = &CONFIG.quote_vendors[vendor_key];
     let res = reqwest::blocking::get(&vendor.endpoint)
@@ -104,15 +104,6 @@ fn fetch_quote(vendor_key: &str) -> Result<Quote> {
 }
 
 /// Query and deserialize value from JSON string.
-///
-/// # Arguments
-///
-/// * `query` - Query.
-/// * `json_str` - JSON string to query.
-///
-/// # Returns
-///
-/// Deserialized value.
 fn query_json<T>(query: &str, json_str: &str) -> Result<T>
 where
     T: DeserializeOwned,
@@ -121,64 +112,17 @@ where
     Ok(serde_json::from_str(&val)?)
 }
 
-/// Push quote to quotes file.
-///
-/// # Arguments
-///
-/// * `quote` - Quote to push.
-fn push_quote(quote: Quote) -> Result<()> {
-    let mut quotes = load_quotes()?;
-    quotes.push(quote);
-    quotes = quotes.into_iter().rev().take(5).rev().collect();
-    save_quotes(quotes)?;
-    Ok(())
-}
-
-/// Load quotes from quotes file.
-///
-/// # Returns
-///
-/// Quotes.
-fn load_quotes() -> Result<Vec<Quote>> {
-    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
-    match std::fs::read_to_string(quotes_path) {
-        Ok(data) => Ok(serde_json::from_str(&data)?),
-        Err(_) => Ok(vec![]),
-    }
-}
-
-/// Save quotes to quotes file.
-///
-/// # Arguments
-///
-/// * `quotes` - Quotes to save.
-fn save_quotes(quotes: Vec<Quote>) -> Result<()> {
-    let data_dir = PROJ_DIRS.data_dir();
-    std::fs::create_dir_all(data_dir)?;
-    let quotes_path = data_dir.join("quotes.json");
-    let data = serde_json::to_string_pretty(&quotes)?;
-    std::fs::write(quotes_path, data)?;
-    Ok(())
-}
-
 /// Display recent quotes.
 fn recent() -> Result<()> {
-    let quotes = load_quotes()?;
-    let infos: Vec<String> = quotes.iter().map(quote_info).collect();
+    let quotes_path = PROJ_DIRS.data_dir().join("quotes.json");
+    let manager = QuoteManager::load(quotes_path, MAX_QUOTES)?;
+    let infos: Vec<String> = manager.list().iter().rev().map(format_quote).collect();
     println!("{}", infos.join("\n-----\n"));
     Ok(())
 }
 
-/// Build quote info string.
-///
-/// # Arguments
-///
-/// * `quote` - Quote.
-///
-/// # Returns
-///
-/// Quote info string.
-fn quote_info(quote: &Quote) -> String {
+/// Format quote.
+fn format_quote(quote: &Quote) -> String {
     let vendor = CONFIG.quote_vendors.get(&quote.vendor);
     [
         (
