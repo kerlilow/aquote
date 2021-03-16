@@ -1,11 +1,13 @@
-use config::{Config, ConfigError, File, FileFormat};
+use anyhow::Result;
+use config::{Config, File, FileFormat};
 use directories::ProjectDirs;
 use serde::Deserialize;
 use std::collections::HashMap;
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
-    pub quote_vendors: HashMap<String, QuoteVendor>,
+    pub vendors: HashMap<String, QuoteVendor>,
+    pub enable_vendors: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -24,7 +26,7 @@ pub struct QuoteQueries {
 }
 
 impl Settings {
-    pub fn new(proj_dirs: &ProjectDirs) -> Result<Self, ConfigError> {
+    pub fn new(proj_dirs: &ProjectDirs) -> Result<Self> {
         let mut s = Config::new();
         s.merge(File::with_name("config/default").format(FileFormat::Toml))?;
         s.merge(
@@ -32,6 +34,11 @@ impl Settings {
                 .format(FileFormat::Toml)
                 .required(false),
         )?;
-        s.try_into()
+        let vendors: HashMap<String, QuoteVendor> = s.get("vendors")?;
+        s.set_default(
+            "enable_vendors",
+            vendors.keys().cloned().collect::<Vec<String>>(),
+        )?;
+        Ok(s.try_into()?)
     }
 }

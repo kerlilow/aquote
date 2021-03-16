@@ -1,18 +1,18 @@
-[quote_vendors.theysaidso]
+[vendors.theysaidso]
 name = "They Said So"
 homepage = "https://theysaidso.com"
 endpoint = "https://quotes.rest/qod"
 
-[quote_vendors.theysaidso.queries]
+[vendors.theysaidso.queries]
 quote = ".contents.quotes[0].quote"
 author = ".contents.quotes[0].author"
 url = ".contents.quotes[0].permalink"
 
-[quote_vendors.zenquotes]
+[vendors.zenquotes]
 name = "ZenQuotes.io"
 homepage = "https://zenquotes.io"
 endpoint = "https://zenquotes.io/api/random"
 
-[quote_vendors.zenquotes.queries]
+[vendors.zenquotes.queries]
 quote = ".[0].q"
 author = ".[0].a"

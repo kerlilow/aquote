@@ -62,13 +62,10 @@ fn show() -> Result<()> {
 
 /// Fetch new quote from a random quote vendor.
 fn fetch() -> Result<()> {
-    ensure!(
-        !CONFIG.quote_vendors.is_empty(),
-        "No quote vendors configured"
-    );
+    ensure!(!CONFIG.vendors.is_empty(), "No quote vendors configured");
     let mut rng = rand::thread_rng();
     let quote = retry(Fixed::from_millis(3000).take(2), || {
-        let vendor_key = CONFIG.quote_vendors.keys().choose(&mut rng).unwrap();
+        let vendor_key = CONFIG.enable_vendors.choose(&mut rng).unwrap();
         fetch_quote(vendor_key)
     })
     .map_err(|e| match e {
@@ -86,7 +83,10 @@ fn fetch() -> Result<()> {
 
 /// Fetch quote from quote vendor.
 fn fetch_quote(vendor_key: &str) -> Result<Quote> {
-    let vendor = &CONFIG.quote_vendors[vendor_key];
+    let vendor = &CONFIG
+        .vendors
+        .get(vendor_key)
+        .ok_or(anyhow!("Vendor \"{}\" not found", vendor_key))?;
     let res = reqwest::blocking::get(&vendor.endpoint)
         .context("Failed to fetch quote")?
         .text()?;
@@ -123,7 +123,7 @@ fn recent() -> Result<()> {
 
 /// Format quote.
 fn format_quote(quote: &Quote) -> String {
-    let vendor = CONFIG.quote_vendors.get(&quote.vendor);
+    let vendor = CONFIG.vendors.get(&quote.vendor);
     [
         (
             "Fetched at:",
