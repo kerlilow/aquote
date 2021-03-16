@@ -1,7 +1,6 @@
 use anyhow::{anyhow, ensure, Context, Result};
 use clap::{AppSettings, Clap};
 use colored::Colorize;
-use directories::ProjectDirs;
 use lazy_static::lazy_static;
 use quote::Quote;
 use quote_manager::QuoteManager;
@@ -16,10 +15,8 @@ mod settings;
 const MAX_QUOTES: usize = 5;
 
 lazy_static! {
-    static ref PROJ_DIRS: ProjectDirs = ProjectDirs::from("me", "kerlilow", "qotd")
-        .expect("Failed to initialize project directories");
     static ref CONFIG: settings::Settings =
-        settings::Settings::new(&PROJ_DIRS).expect("Failed to load configuration file");
+        settings::Settings::new().expect("Failed to load configuration file");
 }
 
 #[derive(Clap)]

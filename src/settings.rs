@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use config::{Config, File, FileFormat};
 use directories::ProjectDirs;
 use serde::Deserialize;
@@ -28,7 +28,9 @@ pub struct QuoteQueries {
 }
 
 impl Settings {
-    pub fn new(proj_dirs: &ProjectDirs) -> Result<Self> {
+    pub fn new() -> Result<Self> {
+        let proj_dirs = ProjectDirs::from("me", "kerlilow", "qotd")
+            .context("Failed to initialize project directories")?;
         let mut s = Config::new();
         s.set_default("data_dir", "/var/lib/qotd")?;
         s.merge(
