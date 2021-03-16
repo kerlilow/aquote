@@ -35,9 +35,6 @@ jobs:
           - os: macos-latest
             asset_suffix: -x86_64-apple-darwin.tar.gz
             asset_content_type: application/gzip
-          - os: windows-latest
-            asset_suffix: -x86_64-pc-windows-msvc.zip
-            asset_content_type: application/zip
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -45,10 +42,6 @@ jobs:
       - name: Install macOS dependencies
         if: matrix.os == 'macos-latest'
         run: brew install automake
-
-      - name: Install Windows dependencies
-        if: matrix.os == 'windows-latest'
-        run: choco install zip
 
       - name: Build
         run: cargo build --release --locked
@@ -68,12 +61,6 @@ jobs:
         run: |
           cd target/release
           tar -czvf ${{ steps.make_asset_name.outputs.asset_name }} qotd
-
-      - name: Package
-        if: matrix.os == 'windows-latest'
-        run: |
-          cd target/release
-          zip ${{ steps.make_asset_name.outputs.asset_name }} qotd.exe
 
       - name: Upload Release Asset
         id: upload-release-asset
