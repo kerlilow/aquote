@@ -105,28 +105,18 @@ mod tests {
 
     #[test]
     fn new() {
-        assert!(QuoteManager::new(
-            vec![make_quote("Quote 1")],
-            "/tmp/quote-manager-test.json",
-            3,
-        )
-        .is_ok());
+        assert!(QuoteManager::new(vec![make_quote("Quote 1")], "/dev/null", 3,).is_ok());
     }
 
     #[test]
     fn new_max_queues_too_small() {
-        assert!(QuoteManager::new(
-            vec![make_quote("Quote 1")],
-            "/tmp/quote-manager-test.json",
-            0,
-        )
-        .is_err());
+        assert!(QuoteManager::new(vec![make_quote("Quote 1")], "/dev/null", 0,).is_err());
     }
 
     #[test]
     fn list() {
         let quotes = vec![make_quote("Quote 1"), make_quote("Quote 2")];
-        let manager = QuoteManager::new(quotes.clone(), "/tmp/quote-manager-test.json", 3).unwrap();
+        let manager = QuoteManager::new(quotes.clone(), "/dev/null", 3).unwrap();
         assert!(manager.list().iter().eq(quotes.iter()));
     }
 
@@ -136,21 +126,20 @@ mod tests {
         let max_quotes = 1;
         // `max_quotes` must be less than number of quotes for the test to be meaningful.
         assert!(max_quotes < quotes.len());
-        let manager =
-            QuoteManager::new(quotes.clone(), "/tmp/quote-manager-test.json", max_quotes).unwrap();
+        let manager = QuoteManager::new(quotes.clone(), "/dev/null", max_quotes).unwrap();
         assert!(manager.list().iter().eq(quotes.iter().take(max_quotes)));
     }
 
     #[test]
     fn get() {
         let quotes = vec![make_quote("Quote 1"), make_quote("Quote 2")];
-        let manager = QuoteManager::new(quotes.clone(), "/tmp/quote-manager-test.json", 3).unwrap();
+        let manager = QuoteManager::new(quotes.clone(), "/dev/null", 3).unwrap();
         assert_eq!(manager.get().unwrap().to_owned(), quotes[0]);
     }
 
     #[test]
     fn push() {
-        let mut manager = QuoteManager::new(vec![], "/tmp/quote-manager-test.json", 2).unwrap();
+        let mut manager = QuoteManager::new(vec![], "/dev/null", 2).unwrap();
         manager.push(make_quote("Quote 1"));
         assert!(manager.list().iter().eq(vec![make_quote("Quote 1")].iter()));
         manager.push(make_quote("Quote 2"));
