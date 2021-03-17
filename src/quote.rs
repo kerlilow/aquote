@@ -17,10 +17,15 @@ impl Quote {
         let res = reqwest::blocking::get(&vendor.endpoint)
             .context("Failed to fetch quote")?
             .text()?;
-        Self::from_json(vendor_key, vendor, &res)
+        Self::from_json(vendor_key, vendor, &res, chrono::Utc::now())
     }
 
-    pub fn from_json(vendor_key: &str, vendor: &QuoteVendor, json_str: &str) -> Result<Self> {
+    pub fn from_json(
+        vendor_key: &str,
+        vendor: &QuoteVendor,
+        json_str: &str,
+        fetch_time: DateTime<Utc>,
+    ) -> Result<Self> {
         Ok(Self {
             quote: query_json(&vendor.queries.quote, json_str).context("Failed to parse quote")?,
             author: query_json(&vendor.queries.author, json_str)
@@ -31,7 +36,7 @@ impl Quote {
                 None
             },
             vendor: vendor_key.to_owned(),
-            fetch_time: chrono::Utc::now(),
+            fetch_time,
         })
     }
 }
@@ -50,4 +55,86 @@ where
         val.as_str().to_owned()
     };
     Ok(serde_json::from_str(&val_str)?)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::quote_vendor::{QuoteQueries, QuoteVendor};
+
+    fn make_vendor(queries: QuoteQueries) -> QuoteVendor {
+        QuoteVendor {
+            name: "Test".to_owned(),
+            homepage: None,
+            endpoint: "https://test".to_owned(),
+            queries,
+        }
+    }
+
+    #[test]
+    fn query_json_str() {
+        assert_eq!(
+            query_json::<String>("s", r#"{ "s": "test" }"#).unwrap(),
+            "test"
+        );
+    }
+
+    #[test]
+    fn from_json() {
+        let vendor = make_vendor(QuoteQueries {
+            quote: "quote".to_owned(),
+            author: "author".to_owned(),
+            url: None,
+        });
+        let fetch_time = chrono::Utc::now();
+        assert_eq!(
+            Quote::from_json(
+                "test",
+                &vendor,
+                r#"{
+                  "quote": "Test quote.",
+                  "author": "Test Author",
+                }"#,
+                fetch_time,
+            )
+            .unwrap(),
+            Quote {
+                quote: "Test quote.".to_owned(),
+                author: "Test Author".to_owned(),
+                url: None,
+                vendor: "test".to_owned(),
+                fetch_time
+            }
+        )
+    }
+
+    #[test]
+    fn from_json_url() {
+        let vendor = make_vendor(QuoteQueries {
+            quote: "quote".to_owned(),
+            author: "author".to_owned(),
+            url: Some("url".to_owned()),
+        });
+        let fetch_time = chrono::Utc::now();
+        assert_eq!(
+            Quote::from_json(
+                "test",
+                &vendor,
+                r#"{
+                  "quote": "Test quote.",
+                  "author": "Test Author",
+                  "url": "https://test/quote",
+                }"#,
+                fetch_time,
+            )
+            .unwrap(),
+            Quote {
+                quote: "Test quote.".to_owned(),
+                author: "Test Author".to_owned(),
+                url: Some("https://test/quote".to_owned()),
+                vendor: "test".to_owned(),
+                fetch_time
+            }
+        )
+    }
 }
