@@ -10,11 +10,12 @@ name = "They Said So"
 homepage = "https://theysaidso.com"
 endpoint = "https://quotes.rest/qod"
 
-# jq queries to use to extract quote information from API response.
+# GJSON Paths to query quote information in the API response.
+# GJSON Path syntax: https://github.com/tidwall/gjson/blob/master/SYNTAX.md
 [vendors.theysaidso.queries]
-quote = ".contents.quotes[0].quote"
-author = ".contents.quotes[0].author"
-url = ".contents.quotes[0].permalink"
+quote = "contents.quotes.0.quote"
+author = "contents.quotes.0.author"
+url = "contents.quotes.0.permalink"
 
 [vendors.zenquotes]
 name = "ZenQuotes.io"
@@ -22,5 +23,5 @@ homepage = "https://zenquotes.io"
 endpoint = "https://zenquotes.io/api/random"
 
 [vendors.zenquotes.queries]
-quote = ".[0].q"
-author = ".[0].a"
+quote = "0.q"
+author = "0.a"

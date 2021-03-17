@@ -105,8 +105,15 @@ fn query_json<T>(query: &str, json_str: &str) -> Result<T>
 where
     T: DeserializeOwned,
 {
-    let val = jq_rs::run(query, json_str).map_err(|e| anyhow!(e.to_string()))?;
-    Ok(serde_json::from_str(&val)?)
+    let val = ajson::get(json_str, query).ok_or(anyhow!("Failed to query value"))?;
+    let val_str = if val.is_string() {
+        // `ajson::Value::as_str` returns the contained string directly, so it is necessary to wrap
+        // it in quotes to make it parseable by serde_json.
+        format!("\"{}\"", val.as_str())
+    } else {
+        val.as_str().to_owned()
+    };
+    Ok(serde_json::from_str(&val_str)?)
 }
 
 /// Display recent quotes.
