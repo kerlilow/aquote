@@ -19,6 +19,7 @@ lazy_static! {
         settings::Settings::new().expect("Failed to load configuration file");
 }
 
+/// qotd (Quote of the Day)
 #[derive(Clap)]
 #[clap(
     version = "0.1",
@@ -32,8 +33,11 @@ struct Opts {
 
 #[derive(Clap)]
 enum Subcommand {
+    /// Show latest quote.
     Show,
+    /// Fetch a new quote.
     Fetch,
+    /// List recent quotes.
     Recent,
 }
 
