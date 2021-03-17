@@ -2,21 +2,17 @@ use anyhow::{anyhow, ensure, Context, Result};
 use clap::{AppSettings, Clap};
 use colored::Colorize;
 use lazy_static::lazy_static;
-use quote::Quote;
-use quote_manager::QuoteManager;
+use qotd::quote::Quote;
+use qotd::quote_manager::QuoteManager;
 use rand::prelude::*;
 use retry::{delay::Fixed, retry};
 use serde::de::DeserializeOwned;
 
-mod quote;
-mod quote_manager;
-mod settings;
-
 const MAX_QUOTES: usize = 5;
 
 lazy_static! {
-    static ref CONFIG: settings::Settings =
-        settings::Settings::new().expect("Failed to load configuration file");
+    static ref CONFIG: qotd::settings::Settings =
+        qotd::settings::Settings::new().expect("Failed to load configuration file");
 }
 
 /// qotd (Quote of the Day)
