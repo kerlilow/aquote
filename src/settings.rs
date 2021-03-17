@@ -1,3 +1,4 @@
+use crate::quote_vendor::QuoteVendor;
 use anyhow::{Context, Result};
 use config::{Config, File, FileFormat};
 use directories::ProjectDirs;
@@ -11,21 +12,6 @@ pub struct Settings {
     pub max_quotes: usize,
     pub enable_vendors: Vec<String>,
     pub vendors: HashMap<String, QuoteVendor>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct QuoteVendor {
-    pub name: String,
-    pub homepage: Option<String>,
-    pub endpoint: String,
-    pub queries: QuoteQueries,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct QuoteQueries {
-    pub quote: String,
-    pub author: String,
-    pub url: Option<String>,
 }
 
 impl Settings {
