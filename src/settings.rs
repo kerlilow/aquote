@@ -16,13 +16,13 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Result<Self> {
-        let proj_dirs = ProjectDirs::from("me", "kerlilow", "qotd")
+        let proj_dirs = ProjectDirs::from("me", "kerlilow", "qotdsh")
             .context("Failed to initialize project directories")?;
         let mut s = Config::new();
-        s.set_default("data_dir", "/var/lib/qotd")?;
+        s.set_default("data_dir", "/var/lib/qotdsh")?;
         s.set_default("max_quotes", 5)?;
         s.merge(
-            File::with_name("/etc/qotd/config.toml")
+            File::with_name("/etc/qotdsh/config.toml")
                 .format(FileFormat::Toml)
                 .required(false),
         )?;

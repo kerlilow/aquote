@@ -9,7 +9,7 @@ pub fn run(app: &App) -> Result<()> {
     let manager = QuoteManager::load(quotes_path, app.config.max_quotes)?;
     match manager.get() {
         Some(q) => println!("{}\n—{}", q.quote.italic(), q.author),
-        None => println!("No quotes available, run `qotd fetch` to fetch new quote"),
+        None => println!("No quotes available, run `qotdsh fetch` to fetch new quote"),
     }
     Ok(())
 }

@@ -1,5 +1,5 @@
-# Directory to store data used by qotd.
-# data_dir = "/var/lib/qotd"
+# Directory to store data used by qotdsh.
+# data_dir = "/var/lib/qotdsh"
 
 # Set `enable_vendors` to enable only the specified vendors.
 # If not set, all configured vendors are enabled by default.

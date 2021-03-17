@@ -1,8 +1,25 @@
 [package]
-name = "qotd"
+name = "qotdsh"
 version = "0.1.0"
 authors = ["Kerli Low <kerlilow@gmail.com>"]
 edition = "2018"
+license = "MIT"
+homepage = "https://github.com/kerlilow/qotdsh"
+repository = "https://github.com/kerlilow/qotdsh"
+documentation = "https://docs.rs/qotdsh"
+readme = "README.md"
+description = "Quote of the day for your shell."
+keywords = [
+    "quote",
+    "qotd",
+    "fun",
+    "shell",
+    "terminal",
+]
+categories = ["command-line-utilities"]
+exclude =   [
+    ".github",
+]
 
 [dependencies]
 anyhow = "1.0.38"
