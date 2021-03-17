@@ -53,10 +53,26 @@ jobs:
         shell: bash
 
       - name: Package
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        if: matrix.os == 'ubuntu-latest'
         run: |
-          cd target/release
-          tar -czvf ${{ steps.make_asset_name.outputs.asset_name }} qotd
+          mkdir dist
+          cp -R \
+              target/release/qotd \
+              config \
+              platform/linux/systemd \
+              dist
+          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} .
+
+      - name: Package
+        if: matrix.os == 'macos-latest'
+        run: |
+          mkdir dist
+          cp -R \
+              target/release/qotd \
+              config \
+              platform/macos/launchd \
+              dist
+          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} .
 
       - name: Upload Release Asset
         id: upload-release-asset
