@@ -8,6 +8,7 @@ use std::path::PathBuf;
 #[derive(Debug, Deserialize)]
 pub struct Settings {
     pub data_dir: PathBuf,
+    pub max_quotes: usize,
     pub enable_vendors: Vec<String>,
     pub vendors: HashMap<String, QuoteVendor>,
 }
@@ -33,6 +34,7 @@ impl Settings {
             .context("Failed to initialize project directories")?;
         let mut s = Config::new();
         s.set_default("data_dir", "/var/lib/qotd")?;
+        s.set_default("max_quotes", 5)?;
         s.merge(
             File::with_name("/etc/qotd/config.toml")
                 .format(FileFormat::Toml)
