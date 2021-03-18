@@ -18,7 +18,7 @@ struct Opts {
 #[derive(Clap)]
 enum Subcommand {
     /// Show latest quote.
-    Show,
+    Show(subcommands::show::Opts),
     /// Fetch a new quote.
     Fetch,
     /// List recent quotes.
@@ -29,7 +29,7 @@ fn main() -> Result<()> {
     let opts = Opts::parse();
     let app = App::new()?;
     match opts.subcmd {
-        Subcommand::Show => subcommands::show::run(&app),
+        Subcommand::Show(sub_opts) => subcommands::show::run(&app, &sub_opts),
         Subcommand::Fetch => subcommands::fetch::run(&app),
         Subcommand::Recent => subcommands::recent::run(&app),
     }

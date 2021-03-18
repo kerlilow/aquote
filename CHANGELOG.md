@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Show specific attribute (e.g. show quote only or author only).
+
 ## [0.1.0] - 2021-03-18
 - Initial release.
 
