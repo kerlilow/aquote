@@ -60,6 +60,7 @@ jobs:
               target/release/aquote \
               config \
               platform/linux/systemd \
+              platform/linux/install.sh \
               dist/aquote
           tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
@@ -71,6 +72,7 @@ jobs:
               target/release/aquote \
               config \
               platform/macos/launchd \
+              platform/macos/install.sh \
               dist/aquote
           tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
@@ -81,6 +83,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create_release.outputs.upload_url }}
-          asset_path: target/release/${{ steps.make_asset_name.outputs.asset_name }}
+          asset_path: ${{ steps.make_asset_name.outputs.asset_name }}
           asset_name: ${{ steps.make_asset_name.outputs.asset_name }}
           asset_content_type: ${{ matrix.asset_content_type }}

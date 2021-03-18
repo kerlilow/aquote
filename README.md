@@ -16,6 +16,8 @@ By default, the following vendors are used:
 
 The [release page](https://github.com/kerlilow/aquote/releases) includes precompiled binaries for Linux and macOS.
 
+After downloading the release package for your OS, extract the archive and run `install.sh` as root.
+
 ## License
 
 This project is licensed under the terms of the MIT license.
