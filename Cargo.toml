@@ -1,12 +1,12 @@
 [package]
-name = "qotdsh"
+name = "aquote"
 version = "0.1.0"
 authors = ["Kerli Low <kerlilow@gmail.com>"]
 edition = "2018"
 license = "MIT"
-homepage = "https://github.com/kerlilow/qotdsh"
-repository = "https://github.com/kerlilow/qotdsh"
-documentation = "https://docs.rs/qotdsh"
+homepage = "https://github.com/kerlilow/aquote"
+repository = "https://github.com/kerlilow/aquote"
+documentation = "https://docs.rs/aquote"
 readme = "README.md"
 description = "Quote of the day for your shell."
 keywords = [

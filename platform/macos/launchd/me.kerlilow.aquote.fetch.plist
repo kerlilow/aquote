@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>me.kerlilow.qotdsh.fetch</string>
+    <string>me.kerlilow.aquote.fetch</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/qotdsh</string>
+        <string>/usr/local/bin/aquote</string>
         <string>fetch</string>
     </array>
 

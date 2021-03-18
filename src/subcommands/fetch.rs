@@ -5,6 +5,7 @@ use anyhow::{anyhow, ensure, Result};
 use rand::prelude::*;
 use retry::{delay::Fixed, retry};
 
+/// Fetch a quote.
 pub fn run(app: &App) -> Result<()> {
     ensure!(
         !app.config.vendors.is_empty(),

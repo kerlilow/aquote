@@ -1,6 +1,6 @@
-# qotdsh - Quote of the Day for your shell
+# aquote - Quote of the Day for your shell
 
-qotdsh fetches a random quote daily from one of the configured quote vendors.
+aquote fetches a random quote daily from one of the configured quote vendors.
 By default, the following vendors are used:
 
 - [They Said So](https://theysaidso.com)
@@ -10,7 +10,7 @@ By default, the following vendors are used:
 
 ### From binaries
 
-The [release page](https://github.com/kerlilow/qotdsh/releases) includes precompiled binaries for Linux and macOS.
+The [release page](https://github.com/kerlilow/aquote/releases) includes precompiled binaries for Linux and macOS.
 
 ## License
 

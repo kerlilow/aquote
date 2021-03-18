@@ -3,4 +3,4 @@ Description=Fetch new quote
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/qotdsh fetch
+ExecStart=/usr/local/bin/aquote fetch

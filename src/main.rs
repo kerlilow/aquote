@@ -1,9 +1,9 @@
 use anyhow::Result;
+use aquote::app::App;
+use aquote::subcommands;
 use clap::{AppSettings, Clap};
-use qotdsh::app::App;
-use qotdsh::subcommands;
 
-/// qotdsh (Quote of the Day for your shell)
+/// aquote (Quote of the Day)
 #[derive(Clap)]
 #[clap(
     version = "0.1",

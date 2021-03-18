@@ -25,6 +25,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "afddf7f520a80dbf76e6f50a35bca42a2331ef227a28b3b6dc5c2e2338d114b1"
 
 [[package]]
+name = "aquote"
+version = "0.1.0"
+dependencies = [
+ "ajson",
+ "anyhow",
+ "chrono",
+ "clap",
+ "colored",
+ "config",
+ "directories",
+ "lazy_static",
+ "rand 0.8.3",
+ "reqwest",
+ "retry",
+ "serde 1.0.124",
+ "serde_json",
+]
+
+[[package]]
 name = "arrayref"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -778,25 +797,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71"
 dependencies = [
  "unicode-xid",
-]
-
-[[package]]
-name = "qotdsh"
-version = "0.1.0"
-dependencies = [
- "ajson",
- "anyhow",
- "chrono",
- "clap",
- "colored",
- "config",
- "directories",
- "lazy_static",
- "rand 0.8.3",
- "reqwest",
- "retry",
- "serde 1.0.124",
- "serde_json",
 ]
 
 [[package]]
