@@ -1,5 +1,9 @@
 # aquote - Quote of the Day for your shell
 
+[![crates.io](https://img.shields.io/crates/v/aquote)](https://crates.io/crates/aquote)
+[![License](https://img.shields.io/crates/l/aquote)](LICENSE.md)
+[![Tests Status](https://github.com/kerlilow/aquote/workflows/tests/badge.svg)](https://github.com/kerlilow/aquote/actions)
+
 aquote fetches a random quote daily from one of the configured quote vendors.
 By default, the following vendors are used:
 
