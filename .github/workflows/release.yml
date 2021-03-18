@@ -61,6 +61,7 @@ jobs:
               config \
               platform/linux/systemd \
               platform/linux/install.sh \
+              platform/linux/uninstall.sh \
               dist/aquote
           tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
@@ -73,6 +74,7 @@ jobs:
               config \
               platform/macos/launchd \
               platform/macos/install.sh \
+              platform/macos/uninstall.sh \
               dist/aquote
           tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
