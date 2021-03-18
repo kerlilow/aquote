@@ -14,9 +14,36 @@ By default, the following vendors are used:
 
 ### From binaries
 
-The [release page](https://github.com/kerlilow/aquote/releases) includes precompiled binaries for Linux and macOS.
+Download the precompiled binary for your OS from the [release page](https://github.com/kerlilow/aquote/releases).
 
 After downloading the release package for your OS, extract the archive and run `install.sh` as root.
+This will install the binary and setup a scheduled job to fetch a new quote daily.
+
+Finally, add `aquote show` to your shell startup script (or `fish_greeting.fish` for fish).
+
+#### Bash
+
+Add `aquote show` to `~/.bashrc`.
+
+#### Zsh
+
+Add `aquote show` to `~/.zshrc`.
+
+#### fish
+
+Add `aquote show` to the `fish_greeting` function in `~/.config/fish/functions/fish_greeting.fish`.
+
+Example:
+
+```fish
+function fish_greeting -d "What's up, fish?"
+    ...
+    set_color normal
+
+    # Add the following line
+    aquote show
+end
+```
 
 ## License
 
