@@ -49,30 +49,30 @@ jobs:
 
       - name: Make asset name
         id: make_asset_name
-        run: echo ::set-output name=asset_name::qotd-${{ steps.get_tag.outputs.tag }}${{ matrix.asset_suffix }}
+        run: echo ::set-output name=asset_name::aquote-${{ steps.get_tag.outputs.tag }}${{ matrix.asset_suffix }}
         shell: bash
 
       - name: Package
         if: matrix.os == 'ubuntu-latest'
         run: |
-          mkdir dist
+          mkdir -p dist/aquote
           cp -R \
-              target/release/qotd \
+              target/release/aquote \
               config \
               platform/linux/systemd \
-              dist
-          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} .
+              dist/aquote
+          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
       - name: Package
         if: matrix.os == 'macos-latest'
         run: |
-          mkdir dist
+          mkdir -p dist/aquote
           cp -R \
-              target/release/qotd \
+              target/release/aquote \
               config \
               platform/macos/launchd \
-              dist
-          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} .
+              dist/aquote
+          tar -C dist -czvf ${{ steps.make_asset_name.outputs.asset_name }} aquote
 
       - name: Upload Release Asset
         id: upload-release-asset
