@@ -2,7 +2,7 @@
 name = "aquote"
 version = "0.1.1"
 authors = ["Kerli Low <kerlilow@gmail.com>"]
-edition = "2018"
+edition = "2021"
 license = "MIT"
 homepage = "https://github.com/kerlilow/aquote"
 repository = "https://github.com/kerlilow/aquote"
